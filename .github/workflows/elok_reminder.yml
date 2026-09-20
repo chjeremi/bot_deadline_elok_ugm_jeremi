@@ -1,0 +1,32 @@
+name: eLOK UGM Task Reminder
+
+on:
+  schedule:
+    # Menjalankan script setiap hari jam 07:00 & 19:00 WIB (00:00 & 12:00 UTC)
+    - cron: '0 0,12 * * *'
+  workflow_dispatch: # Memungkinkan kamu menjalankan script manual dari tab Actions
+
+jobs:
+  check-tasks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests icalendar
+
+      - name: Run eLOK Checker
+        env:
+          ELOK_ICAL_URL: ${{ secrets.ELOK_ICAL_URL }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python check_elok.py
