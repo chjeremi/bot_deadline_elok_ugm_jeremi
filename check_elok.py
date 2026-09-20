@@ -55,7 +55,7 @@ def main():
             days_left = diff.total_seconds() / 86400
 
             # Cek tugas yang tenggatnya antara 0 sampai 5 hari lagi
-            if 0 <= days_left <= 5:
+            if 0 <= days_left <= 60:
                 # Konversi waktu ke jam lokal (WIB = UTC+7)
                 local_time = datetime.fromtimestamp(event_time.timestamp(), tz=timezone.utc)
                 formatted_time = event_time.strftime("%d %b %Y, %H:%M UTC")
